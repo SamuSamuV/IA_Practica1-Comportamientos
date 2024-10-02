@@ -25,5 +25,6 @@ public class Player : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
         movement = new Vector3(moveX, 0f, moveY).normalized;
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.Euler(movement);
     }
 }
