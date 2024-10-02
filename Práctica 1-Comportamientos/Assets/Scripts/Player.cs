@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
     public Rigidbody rb;
 
     private Vector3 movement;
-    private Vector3 direction;
 
     void Start()
     {
@@ -27,6 +26,8 @@ public class Player : MonoBehaviour
         movement = new Vector3(moveX, 0f, moveY).normalized;
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
 
-        this.transform.rotation = Quaternion.Euler(0.0f, Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, 0.0f);
+        Quaternion targetRotation = Quaternion.LookRotation(movement);
+        Quaternion additionalRotation = Quaternion.Euler(0, -90, 0);
+        transform.rotation = targetRotation * additionalRotation;
     }
 }
