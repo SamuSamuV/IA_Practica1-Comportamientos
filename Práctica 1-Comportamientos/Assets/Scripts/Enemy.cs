@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public LayerMask enemyLayer;
+    public LayerMask wallLayer;
     public float raycastDistance = 100f;
     public Transform player;
     public Transform[] enemies;
@@ -20,7 +21,6 @@ public class Enemy : MonoBehaviour
         {
             enemies[i] = enemyObjects[i].transform;
         }
-
     }
 
     void Update()
@@ -32,7 +32,16 @@ public class Enemy : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(player.position, directionToEnemy, out hit, raycastDistance, enemyLayer))
             {
-                Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
+                }
+
+                if (hit.collider.CompareTag("Wall"))
+                {
+                    Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.red);
+                }
+
             }
         }
     }
