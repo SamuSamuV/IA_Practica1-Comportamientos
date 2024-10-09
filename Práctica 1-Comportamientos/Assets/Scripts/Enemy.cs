@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -9,7 +10,9 @@ public class Enemy : MonoBehaviour
     public float raycastDistance = 100f;
     public Transform player;
     public Transform[] enemies;
+    public GameObject enemy;
 
+    [SerializeField] float moveSpeed = 5f;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -21,27 +24,37 @@ public class Enemy : MonoBehaviour
         {
             enemies[i] = enemyObjects[i].transform;
         }
+
+        enemy = gameObject;
     }
 
     void Update()
     {
-        for (int i = 0; i < enemies.Length; i++)
+        RayCastLogic();
+    }
+
+    public void RayCastLogic()
+    {
+        //for (int i = 0; i < enemies.Length; i++) //Este bucle for se usaba para que cada enemigo pudiese saber la posición de los otros enemigos
+
+        Vector3 directionToEnemy = (enemy.transform.position - player.position).normalized;
+
+        RaycastHit hit;
+        if (Physics.Raycast(player.position, directionToEnemy, out hit, raycastDistance, enemyLayer))
         {
-            Vector3 directionToEnemy = (enemies[i].position - player.position).normalized;
-
-            RaycastHit hit;
-            if (Physics.Raycast(player.position, directionToEnemy, out hit, raycastDistance, enemyLayer))
+            if (hit.collider.CompareTag("Wall"))
             {
-                if (hit.collider.CompareTag("Enemy"))
-                {
-                    Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
-                }
+                Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.red);
+            }
 
-                if (hit.collider.CompareTag("Wall"))
-                {
-                    Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.red);
-                }
+            else if (hit.collider.CompareTag("Enemy"))
+            {
+                Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.blue);
+            }
 
+            else if (hit.collider.CompareTag("ConoVision"))
+            {
+                Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
             }
         }
     }
