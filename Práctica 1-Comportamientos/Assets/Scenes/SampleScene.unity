@@ -170,9 +170,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3479833537067129027, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4248407488485062567, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4966001005031706919, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 4966001005031706919, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7128446052938770908, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
       propertyPath: wallLayer.m_Bits
