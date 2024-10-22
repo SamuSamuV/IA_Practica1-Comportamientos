@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public Transform player;
     public Transform[] enemies;
     public GameObject enemy;
+    public GameObject conoVision;
 
     [SerializeField] float moveSpeed = 5f;
     void Start()
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour
         }
 
         enemy = gameObject;
+        conoVision = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
     }
 
     void Update()
@@ -40,6 +42,7 @@ public class Enemy : MonoBehaviour
         //for (int i = 0; i < enemies.Length; i++) //Este bucle for se usaba para que cada enemigo pudiese saber la posición de los otros enemigos
 
         Vector3 directionToEnemy = (enemy.transform.position - player.position).normalized;
+        float distanceToEnemy = Vector3.Distance(player.position, enemy.transform.position);
 
         RaycastHit hit;
         if (Physics.Raycast(player.position, directionToEnemy, out hit, raycastDistance, enemyLayer))
@@ -54,7 +57,7 @@ public class Enemy : MonoBehaviour
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.blue);
             }
 
-            else if (hit.collider.CompareTag("ConoVision"))
+            else if (hit.collider.gameObject == conoVision)
             {
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
                 FollowPlayer();
