@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Wall
   - ConoVision
+  - CercaniaTrigger
   layers:
   - Default
   - TransparentFX
