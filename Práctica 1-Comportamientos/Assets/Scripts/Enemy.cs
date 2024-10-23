@@ -70,9 +70,6 @@ public class Enemy : MonoBehaviour
 
     public void FollowPlayer()
     {
-        if (player != null)
-        {
-            navMeshAgent.SetDestination(player.position);
-        }
+        navMeshAgent.SetDestination(player.position);
     }
 }
