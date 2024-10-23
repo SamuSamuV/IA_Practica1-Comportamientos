@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
-
+using UnityEngine.AI; 
 
 public class Enemy : MonoBehaviour
 {
@@ -14,6 +13,8 @@ public class Enemy : MonoBehaviour
     public Transform[] enemies;
     public GameObject enemy;
     public GameObject conoVision;
+
+    private NavMeshAgent navMeshAgent;
 
     [SerializeField] float moveSpeed = 5f;
     void Start()
@@ -30,6 +31,8 @@ public class Enemy : MonoBehaviour
 
         enemy = gameObject;
         conoVision = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
@@ -67,9 +70,9 @@ public class Enemy : MonoBehaviour
 
     public void FollowPlayer()
     {
-        transform.position = Vector3.MoveTowards(this.transform.position, player.position, 2 * Time.deltaTime);
-
-        Vector3 directionToPlayer = new Vector3(player.position.x, transform.position.y, player.position.z);
-        transform.LookAt(directionToPlayer);
+        if (player != null)
+        {
+            navMeshAgent.SetDestination(player.position);
+        }
     }
 }
