@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI; 
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
@@ -17,6 +17,11 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent navMeshAgent;
 
     [SerializeField] float moveSpeed = 5f;
+
+    private Vector3 lastSeenPosition;
+    private bool isChasingPlayer = false;
+    private float destinationOfLastSeenPlayer = 0.5f;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -38,12 +43,16 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         RayCastLogic();
+
+        if (isChasingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= destinationOfLastSeenPlayer)
+        {
+            isChasingPlayer = false;
+            OnReachedLastSeenPositionSEARCH();
+        }
     }
 
     public void RayCastLogic()
     {
-        //for (int i = 0; i < enemies.Length; i++) //Este bucle for se usaba para que cada enemigo pudiese saber la posición de los otros enemigos
-
         Vector3 directionToEnemy = (enemy.transform.position - player.position).normalized;
         float distanceToEnemy = Vector3.Distance(player.position, enemy.transform.position);
 
@@ -63,13 +72,33 @@ public class Enemy : MonoBehaviour
             else if (hit.collider.gameObject == conoVision)
             {
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
+
+                lastSeenPosition = player.position;
                 FollowPlayer();
+            }
+
+            else
+            {
+                Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.yellow);
             }
         }
     }
 
     public void FollowPlayer()
     {
-        navMeshAgent.SetDestination(player.position);
+        navMeshAgent.SetDestination(lastSeenPosition);
+        isChasingPlayer = true;
+    }
+
+    void OnReachedLastSeenPositionSEARCH()
+    {
+        StartCoroutine(Girar());
+    }
+
+    IEnumerator Girar()
+    {
+        yield return new WaitForSeconds(1f);
+
+
     }
 }
