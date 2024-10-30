@@ -22,6 +22,8 @@ public class Enemy : MonoBehaviour
     private bool isChasingPlayer = false;
     private float destinationOfLastSeenPlayer = 0.5f;
 
+    [SerializeField] public GameManager gM;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -38,6 +40,8 @@ public class Enemy : MonoBehaviour
         conoVision = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
 
         navMeshAgent = GetComponent<NavMeshAgent>();
+
+        gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
     }
 
     void Update()
@@ -150,6 +154,15 @@ public class Enemy : MonoBehaviour
             totalRotation += rotationStep;
 
             yield return null;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            gM.SetActiveLosePanel();
+            Debug.Log("Hola");
         }
     }
 }

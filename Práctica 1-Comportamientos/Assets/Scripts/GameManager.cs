@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] public GameObject losePanel;
+
+    public bool endGame = false;
     void Start()
     {
         
@@ -12,5 +15,15 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void Retry()
+    {
+
+    }
+
+    public void SetActiveLosePanel()
+    {
+        losePanel.SetActive(true);
     }
 }
