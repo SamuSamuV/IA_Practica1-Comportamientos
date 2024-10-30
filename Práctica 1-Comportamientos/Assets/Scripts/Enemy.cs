@@ -1,4 +1,4 @@
-using System.Collections;
+using System. Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -92,13 +92,64 @@ public class Enemy : MonoBehaviour
 
     void OnReachedLastSeenPositionSEARCH()
     {
-        StartCoroutine(Girar());
+        StartCoroutine(GirarDer());
     }
 
-    IEnumerator Girar()
+    IEnumerator GirarDer()
     {
         yield return new WaitForSeconds(1f);
 
+        float totalRotation = 0f;
+        float rotationSpeed = 150f;
 
+        while (totalRotation < 160f)
+        {
+            float rotationStep = rotationSpeed * Time.deltaTime;
+            transform.Rotate(0f, rotationStep, 0f);
+
+            totalRotation += rotationStep;
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        StartCoroutine(GirarIzq());
+    }
+
+    IEnumerator GirarIzq()
+    {
+        float totalRotation = 0f;
+        float rotationSpeed = 150f;
+
+        while (totalRotation > -320f)
+        {
+            float rotationStep = -rotationSpeed * Time.deltaTime;
+            transform.Rotate(0f, rotationStep, 0f);
+
+            totalRotation += rotationStep;
+
+            yield return null;
+        }
+
+        StartCoroutine(GirarVolver());
+    }
+
+    IEnumerator GirarVolver()
+    {
+        yield return new WaitForSeconds(1f);
+
+        float totalRotation = 0f;
+        float rotationSpeed = 150f;
+
+        while (totalRotation < 160f)
+        {
+            float rotationStep = rotationSpeed * Time.deltaTime;
+            transform.Rotate(0f, rotationStep, 0f);
+
+            totalRotation += rotationStep;
+
+            yield return null;
+        }
     }
 }
