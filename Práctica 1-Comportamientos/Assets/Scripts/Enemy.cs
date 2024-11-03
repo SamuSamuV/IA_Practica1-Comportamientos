@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
         if (isChasingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= destinationOfLastSeenPlayer)
         {
             isChasingPlayer = false;
-            OnReachedLastSeenPositionSEARCH();
+           StartCoroutine(SearchPlayerRoutine());
         }
     }
 
@@ -94,15 +94,17 @@ public class Enemy : MonoBehaviour
         isChasingPlayer = true;
     }
 
-    void OnReachedLastSeenPositionSEARCH()
+    IEnumerator SearchPlayerRoutine()
     {
-        StartCoroutine(GirarDer());
+        yield return GirarDer();
+        yield return new WaitForSeconds(1f);
+        yield return GirarIzq();
+        yield return new WaitForSeconds(1f);
+        yield return GirarVolver();
     }
 
     IEnumerator GirarDer()
     {
-        yield return new WaitForSeconds(1f);
-
         float totalRotation = 0f;
         float rotationSpeed = 150f;
 
@@ -115,10 +117,6 @@ public class Enemy : MonoBehaviour
 
             yield return null;
         }
-
-        yield return new WaitForSeconds(1f);
-
-        StartCoroutine(GirarIzq());
     }
 
     IEnumerator GirarIzq()
@@ -135,14 +133,10 @@ public class Enemy : MonoBehaviour
 
             yield return null;
         }
-
-        StartCoroutine(GirarVolver());
     }
 
     IEnumerator GirarVolver()
     {
-        yield return new WaitForSeconds(1f);
-
         float totalRotation = 0f;
         float rotationSpeed = 150f;
 
@@ -162,7 +156,6 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             gM.SetActiveLosePanel();
-            Debug.Log("Hola");
         }
     }
 }
