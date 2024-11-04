@@ -78,6 +78,7 @@ public class Enemy : MonoBehaviour
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
 
                 lastSeenPosition = player.position;
+                StopAllCoroutines();
                 FollowPlayer();
             }
 
