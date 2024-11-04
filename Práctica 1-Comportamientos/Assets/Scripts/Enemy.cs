@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
         if (isChasingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= destinationOfLastSeenPlayer)
         {
             isChasingPlayer = false;
-           StartCoroutine(SearchPlayerRoutine());
+            StartCoroutine(SearchPlayerRoutine());
         }
     }
 
@@ -78,7 +78,6 @@ public class Enemy : MonoBehaviour
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
 
                 lastSeenPosition = player.position;
-                StopAllCoroutines();
                 FollowPlayer();
             }
 
@@ -93,6 +92,7 @@ public class Enemy : MonoBehaviour
     {
         navMeshAgent.SetDestination(lastSeenPosition);
         isChasingPlayer = true;
+        StopAllCoroutines();
     }
 
     IEnumerator SearchPlayerRoutine()
@@ -157,6 +157,15 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             gM.SetActiveLosePanel();
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("ColliderSonido"))
+        {
+            FollowPlayer();
+            lastSeenPosition = player.position;
         }
     }
 }
