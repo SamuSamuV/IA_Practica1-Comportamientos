@@ -104,8 +104,36 @@ public class Patrullar : MonoBehaviour
             enemyAgent.SetDestination(waypoints[currentWaypoint].position);
         }
     }
-
-
-
-
 }
+
+//Para hacer que el enemigo vuelva automaticamente al 1º punto de patrullaje al completar el recorrido
+
+//public Transform[] waypoints; //Array de puntos de patrullaje
+//public float speed = 2f; //Velocidad de movimiento del enemigo
+//private NavMeshAgent enemyAgent;
+//private interface currentWayPoint = 0; //Indice del waypoint actual
+
+//void Start()
+//{
+//    enemyAgent = getComponent<NavMeshAgent>();
+
+//    if(waypoints.Length > 0)
+//    {
+//        enemyAgent.SetDestination(waypoints[currentWaypoint].position); //Establece el primer punto de patrullaje como destino inicial
+//    }
+//}
+
+//void Update()
+//{
+//    if(!enemyAgent.pathPending && enemyAgent.remainingDistance < 0.5f) //Verificar si el enemigo ha alcanzado el waypoint actual
+//    {
+//        currentWaypoint++; //Incrementar el indice del waypoint actual
+
+//        if(currentWaypoint >= waypoints.Length) //Si ha llegado al ultimo waypoint, volver al primero
+//        {
+//            currentWaypoint = 0;
+//        }
+
+//        enemyAgent.SetDestination(waypoints[currentWaypoint].position); //Establecer el proximo destino en el nuevo waypoint
+//    }
+//}
