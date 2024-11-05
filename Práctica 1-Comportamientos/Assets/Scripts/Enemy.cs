@@ -42,8 +42,6 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
         accesoPatrullar = GetComponent<Patrullar>();
-
-        lastSeenPosition = player.position;
     }
 
     void Update()
@@ -171,8 +169,8 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ColliderSonido"))
         {
-            FollowPlayer();
             lastSeenPosition = player.position;
+            FollowPlayer();
         }
     }
 }
