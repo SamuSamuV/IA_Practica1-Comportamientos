@@ -711,11 +711,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7128446052938770908, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4966001005031706919, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 195040266}
   m_SourcePrefab: {fileID: 100100000, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+--- !u!1 &195040265 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4966001005031706919, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+  m_PrefabInstance: {fileID: 195040264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &195040266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195040265}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b15d3fd7e3fe3c439236088275c0c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints: []
 --- !u!1 &241659889
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,8 +1960,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4966001005031706919, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 836464587}
   m_SourcePrefab: {fileID: 100100000, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+--- !u!1 &836464586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4966001005031706919, guid: ab47f1f6b092dd84d9d6d4ab23151c89, type: 3}
+  m_PrefabInstance: {fileID: 836464585}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &836464587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836464586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b15d3fd7e3fe3c439236088275c0c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 1404900143}
+  - {fileID: 676664787}
+  - {fileID: 310999930}
+  - {fileID: 241659890}
+  - {fileID: 2047881335}
+  - {fileID: 372611681}
 --- !u!1 &907914188
 GameObject:
   m_ObjectHideFlags: 0

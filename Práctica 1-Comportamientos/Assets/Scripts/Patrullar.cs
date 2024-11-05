@@ -10,6 +10,7 @@ public class Patrullar : MonoBehaviour
     public Transform[] waypoints;
     int currentWaypoint = 0;
     private bool rutaCompleta = false;
+    private bool isPatrolling = true;
 
     //[SerializeField] private float VelocidadMovimiento;
 
@@ -104,7 +105,45 @@ public class Patrullar : MonoBehaviour
             enemyAgent.SetDestination(waypoints[currentWaypoint].position);
         }
     }
+
+
+    public void TogglePatrulla(bool status)
+    {
+        isPatrolling = status;
+
+        // Si se reactiva la patrulla, ir al waypoint más cercano
+        if (status)
+        {
+            GoToClosestWaypoint();
+        }
+        else
+        {
+            enemyAgent.ResetPath(); // Detener el movimiento mientras no esté en modo patrulla
+        }
+    }
+
+    private void GoToClosestWaypoint()
+    {
+        float closestDistance = Mathf.Infinity;
+        int closestWaypointIndex = 0;
+
+        for (int i = 0; i < waypoints.Length; i++)
+        {
+            float distance = Vector3.Distance(transform.position, waypoints[i].position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestWaypointIndex = i;
+            }
+        }
+
+        currentWaypoint = closestWaypointIndex;
+        enemyAgent.SetDestination(waypoints[currentWaypoint].position);
+        isPatrolling = true;
+    }
+
 }
+
 
 //Para hacer que el enemigo vuelva automaticamente al 1º punto de patrullaje al completar el recorrido
 

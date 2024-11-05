@@ -24,6 +24,8 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] public GameManager gM;
 
+    private Patrullar accesoPatrullar; //referencia al script Patrullar
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -42,6 +44,7 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
 
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
+        accesoPatrullar = GetComponent<Patrullar>(); //obtenemos la referencia
     }
 
     void Update()
@@ -90,6 +93,7 @@ public class Enemy : MonoBehaviour
 
     public void FollowPlayer()
     {
+        accesoPatrullar.TogglePatrulla(false);//detiene la patrulla
         navMeshAgent.SetDestination(lastSeenPosition);
         isChasingPlayer = true;
         StopAllCoroutines();
@@ -102,6 +106,10 @@ public class Enemy : MonoBehaviour
         yield return GirarIzq();
         yield return new WaitForSeconds(1f);
         yield return GirarVolver();
+
+
+        // Después de buscar, llama al método reactivar la patrulla de patrullar
+        accesoPatrullar.TogglePatrulla(true);
     }
 
     IEnumerator GirarDer()
