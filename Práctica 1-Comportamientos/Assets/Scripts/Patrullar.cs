@@ -141,7 +141,6 @@ public class Patrullar : MonoBehaviour
         enemyAgent.SetDestination(waypoints[currentWaypoint].position);
         isPatrolling = true;
     }
-
 }
 
 
