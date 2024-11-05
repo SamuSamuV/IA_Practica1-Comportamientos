@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] float moveSpeed = 5f;
 
-    private Vector3 lastSeenPosition;
+    [SerializeField] public Vector3 lastSeenPosition;
     private bool isChasingPlayer = false;
     private float destinationOfLastSeenPlayer = 0.5f;
 
@@ -31,7 +31,6 @@ public class Enemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
         GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
-
         enemies = new Transform[enemyObjects.Length];
         for (int i = 0; i < enemyObjects.Length; i++)
         {
@@ -40,11 +39,11 @@ public class Enemy : MonoBehaviour
 
         enemy = gameObject;
         conoVision = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
-
         navMeshAgent = GetComponent<NavMeshAgent>();
-
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
-        accesoPatrullar = GetComponent<Patrullar>(); //obtenemos la referencia
+        accesoPatrullar = GetComponent<Patrullar>();
+
+        lastSeenPosition = player.position;
     }
 
     void Update()
