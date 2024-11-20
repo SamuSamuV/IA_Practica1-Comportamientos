@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2674778367556034339}
   - component: {fileID: 3127710750303783184}
   m_Layer: 0
-  m_Name: Ojos
+  m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 6982030851260179474}
   - component: {fileID: 4391190470287822562}
   m_Layer: 0
-  m_Name: ConoVision
+  m_Name: VisionCone
   m_TagString: ConoVision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -313,5 +313,7 @@ MonoBehaviour:
   player: {fileID: 0}
   enemies: []
   enemy: {fileID: 0}
-  conoVision: {fileID: 0}
+  visionCone: {fileID: 4248407488485062567}
   moveSpeed: 1
+  lastSeenPosition: {x: 0, y: 0, z: 0}
+  gM: {fileID: 0}

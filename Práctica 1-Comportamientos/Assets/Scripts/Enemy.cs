@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     public Transform player;
     public Transform[] enemies;
     public GameObject enemy;
-    public GameObject conoVision;
+    public GameObject visionCone;
 
     private NavMeshAgent navMeshAgent;
 
@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] public GameManager gM;
 
-    private Patrullar accesoPatrullar; //referencia al script Patrullar
+    private Patrol patrolAccess; //referencia al script Patrullar
 
     void Start()
     {
@@ -38,10 +38,10 @@ public class Enemy : MonoBehaviour
         }
 
         enemy = gameObject;
-        conoVision = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+        visionCone = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
-        accesoPatrullar = GetComponent<Patrullar>();
+        patrolAccess = GetComponent<Patrol>();
     }
 
     void Update()
@@ -73,7 +73,7 @@ public class Enemy : MonoBehaviour
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.blue);
             }
 
-            else if (hit.collider.gameObject == conoVision)
+            else if (hit.collider.gameObject == visionCone)
             {
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
 
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
 
     public void FollowPlayer()
     {
-        accesoPatrullar.TogglePatrulla(false);//detiene la patrulla
+        patrolAccess.TogglePatrol(false);//detiene la patrulla
         navMeshAgent.SetDestination(lastSeenPosition);
         isChasingPlayer = true;
         StopAllCoroutines();
@@ -98,18 +98,18 @@ public class Enemy : MonoBehaviour
 
     IEnumerator SearchPlayerRoutine()
     {
-        yield return GirarDer();
+        yield return RotateRight();
         yield return new WaitForSeconds(1f);
-        yield return GirarIzq();
+        yield return RotateLeft();
         yield return new WaitForSeconds(1f);
-        yield return GirarVolver();
+        yield return RotateGoBack();
 
 
         // Después de buscar, llama al método reactivar la patrulla de patrullar
-        accesoPatrullar.TogglePatrulla(true);
+        patrolAccess.TogglePatrol(true);
     }
 
-    IEnumerator GirarDer()
+    IEnumerator RotateRight()
     {
         float totalRotation = 0f;
         float rotationSpeed = 150f;
@@ -125,7 +125,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator GirarIzq()
+    IEnumerator RotateLeft()
     {
         float totalRotation = 0f;
         float rotationSpeed = 150f;
@@ -141,7 +141,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator GirarVolver()
+    IEnumerator RotateGoBack()
     {
         float totalRotation = 0f;
         float rotationSpeed = 150f;

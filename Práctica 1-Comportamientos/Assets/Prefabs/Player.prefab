@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 376436148553279920}
   - component: {fileID: 6957350970251023248}
   m_Layer: 0
-  m_Name: Ojos
+  m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 6128387423658571936}
   - component: {fileID: 3044010381947663947}
   m_Layer: 0
-  m_Name: ColliderSonido
+  m_Name: SoundCollider
   m_TagString: ColliderSonido
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  sonidoCollider: {fileID: 7826682539805947455}
+  soundCollider: {fileID: 7826682539805947455}
   rb: {fileID: 0}
 --- !u!54 &5832087044731947917
 Rigidbody:

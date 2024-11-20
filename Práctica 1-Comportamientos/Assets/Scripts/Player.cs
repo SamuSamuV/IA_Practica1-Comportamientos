@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 5f;
-    [SerializeField] GameObject sonidoCollider;
+    [SerializeField] GameObject soundCollider;
     public Rigidbody rb;
 
     private Vector3 movement;
@@ -17,11 +17,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Movimiento();
+        Movement();
         InstanciarDeteccionRuido();
     }
 
-    void Movimiento()
+    void Movement()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
@@ -40,9 +40,9 @@ public class Player : MonoBehaviour
     public void InstanciarDeteccionRuido()
     {
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-            sonidoCollider.SetActive(true);
+            soundCollider.SetActive(true);
 
         else if(Input.GetAxisRaw("Horizontal") == 0 || Input.GetAxisRaw("Vertical") == 0)
-            sonidoCollider.SetActive(false);
+            soundCollider.SetActive(false);
     }
 }
