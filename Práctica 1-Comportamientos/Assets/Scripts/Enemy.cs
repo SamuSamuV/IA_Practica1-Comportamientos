@@ -45,17 +45,19 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
         patrolAccess = GetComponent<Patrol>();
+
+        animator.SetBool("Patroll", true);
     }
 
     void Update()
     {
         RayCastLogic();
 
-        if (isChasingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= destinationOfLastSeenPlayer)
-        {
-            isChasingPlayer = false;
-            StartCoroutine(SearchPlayerRoutine());
-        }
+        //if (isChasingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= destinationOfLastSeenPlayer)
+        //{
+        //    isChasingPlayer = false;
+        //    StartCoroutine(SearchPlayerRoutine());
+        //}
     }
 
     public void RayCastLogic()
@@ -68,105 +70,161 @@ public class Enemy : MonoBehaviour
         {
             if (hit.collider.CompareTag("Wall"))
             {
-                animator.SetBool("IsWatched", false);
+                if (animator.GetBool("Patroll"))
+                {
+                    animator.SetBool("Patroll", true);
+                    animator.SetBool("Search", false);
+                    animator.SetBool("Follow", false);
+                }
+
+                else if (!animator.GetBool("Patroll"))
+                {
+                    animator.SetBool("Search", true);
+                    animator.SetBool("Follow", false);
+                    animator.SetBool("Patroll", false);
+                }
+
+                else if (animator.GetBool("Follow"))
+                {
+                    animator.SetBool("Search", true);
+                    animator.SetBool("Follow", false);
+                    animator.SetBool("Patroll", false);
+                }
 
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.red);
             }
 
             else if (hit.collider.gameObject == this.gameObject)
             {
-                animator.SetBool("IsWatched", false);
+                if (animator.GetBool("Patroll"))
+                {
+                    animator.SetBool("Patroll", true);
+                    animator.SetBool("Search", false);
+                    animator.SetBool("Follow", false);
+                }
+
+                else if (!animator.GetBool("Patroll"))
+                {
+                    animator.SetBool("Search", true);
+                    animator.SetBool("Follow", false);
+                    animator.SetBool("Patroll", false);
+                }
+
+                else if (animator.GetBool("Follow"))
+                {
+                    animator.SetBool("Search", true);
+                    animator.SetBool("Follow", false);
+                    animator.SetBool("Patroll", false);
+                }
 
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.blue);
             }
 
             else if (hit.collider.gameObject == visionCone)
             {
-                animator.SetBool("IsWatched", true);
+                animator.SetBool("Follow", true);
+                animator.SetBool("Patroll", false);
+                animator.SetBool("Search", false);
 
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
-
-                lastSeenPosition = player.position;
-                FollowPlayer();
             }
 
             else
             {
-                animator.SetBool("IsWatched", false);
+                if (animator.GetBool("Patroll"))
+                {
+                    animator.SetBool("Patroll", true);
+                    animator.SetBool("Search", false);
+                    animator.SetBool("Follow", false);
+                }
+
+                else if (!animator.GetBool("Patroll"))
+                {
+                    animator.SetBool("Search", true);
+                    animator.SetBool("Follow", false);
+                    animator.SetBool("Patroll", false);
+                }
+
+                else if (animator.GetBool("Follow"))
+                {
+                    animator.SetBool("Search", true);
+                    animator.SetBool("Follow", false);
+                    animator.SetBool("Patroll", false);
+                }
 
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.yellow);
             }
         }
     }
 
-    public void FollowPlayer()
-    {
-        patrolAccess.TogglePatrol(false);//detiene la patrulla
-        navMeshAgent.SetDestination(lastSeenPosition);
-        isChasingPlayer = true;
-        StopAllCoroutines();
-    }
+    //public void FollowPlayer()
+    //{
+    //    patrolAccess.TogglePatrol(false);//detiene la patrulla
+    //    navMeshAgent.SetDestination(lastSeenPosition);
+    //    isChasingPlayer = true;
+    //    StopAllCoroutines();
+    //}
 
-    IEnumerator SearchPlayerRoutine()
-    {
-        yield return RotateRight();
-        yield return new WaitForSeconds(1f);
-        yield return RotateLeft();
-        yield return new WaitForSeconds(1f);
-        yield return RotateGoBack();
+    //IEnumerator SearchPlayerRoutine()
+    //{
+    //    yield return RotateRight();
+    //    yield return new WaitForSeconds(1f);
+    //    yield return RotateLeft();
+    //    yield return new WaitForSeconds(1f);
+    //    yield return RotateGoBack();
 
 
-        // Después de buscar, llama al método reactivar la patrulla de patrullar
-        patrolAccess.TogglePatrol(true);
-    }
+    //    // Después de buscar, llama al método reactivar la patrulla de patrullar
+    //    patrolAccess.TogglePatrol(true);
+    //}
 
-    IEnumerator RotateRight()
-    {
-        float totalRotation = 0f;
-        float rotationSpeed = 150f;
+    //IEnumerator RotateRight()
+    //{
+    //    float totalRotation = 0f;
+    //    float rotationSpeed = 150f;
 
-        while (totalRotation < 160f)
-        {
-            float rotationStep = rotationSpeed * Time.deltaTime;
-            transform.Rotate(0f, rotationStep, 0f);
+    //    while (totalRotation < 160f)
+    //    {
+    //        float rotationStep = rotationSpeed * Time.deltaTime;
+    //        transform.Rotate(0f, rotationStep, 0f);
 
-            totalRotation += rotationStep;
+    //        totalRotation += rotationStep;
 
-            yield return null;
-        }
-    }
+    //        yield return null;
+    //    }
+    //}
 
-    IEnumerator RotateLeft()
-    {
-        float totalRotation = 0f;
-        float rotationSpeed = 150f;
+    //IEnumerator RotateLeft()
+    //{
+    //    float totalRotation = 0f;
+    //    float rotationSpeed = 150f;
 
-        while (totalRotation > -320f)
-        {
-            float rotationStep = -rotationSpeed * Time.deltaTime;
-            transform.Rotate(0f, rotationStep, 0f);
+    //    while (totalRotation > -320f)
+    //    {
+    //        float rotationStep = -rotationSpeed * Time.deltaTime;
+    //        transform.Rotate(0f, rotationStep, 0f);
 
-            totalRotation += rotationStep;
+    //        totalRotation += rotationStep;
 
-            yield return null;
-        }
-    }
+    //        yield return null;
+    //    }
+    //}
 
-    IEnumerator RotateGoBack()
-    {
-        float totalRotation = 0f;
-        float rotationSpeed = 150f;
+    //IEnumerator RotateGoBack()
+    //{
+    //    float totalRotation = 0f;
+    //    float rotationSpeed = 150f;
 
-        while (totalRotation < 160f)
-        {
-            float rotationStep = rotationSpeed * Time.deltaTime;
-            transform.Rotate(0f, rotationStep, 0f);
+    //    while (totalRotation < 160f)
+    //    {
+    //        float rotationStep = rotationSpeed * Time.deltaTime;
+    //        transform.Rotate(0f, rotationStep, 0f);
 
-            totalRotation += rotationStep;
+    //        totalRotation += rotationStep;
 
-            yield return null;
-        }
-    }
+    //        yield return null;
+    //    }
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -180,8 +238,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ColliderSonido"))
         {
-            lastSeenPosition = player.position;
-            FollowPlayer();
+
         }
     }
 }

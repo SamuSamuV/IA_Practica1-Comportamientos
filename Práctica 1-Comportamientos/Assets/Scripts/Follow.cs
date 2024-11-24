@@ -1,21 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Follow : StateMachineBehaviour
 {
     [SerializeField] float speed;
+    public Transform player;
+    Enemy enemy;
+    private Patrol patrolAccess; //referencia al script Patrullar
+    private NavMeshAgent navMeshAgent;
+    [SerializeField] public Vector3 lastSeenPosition;
+    private bool isChasingPlayer = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        enemy = animator.gameObject.GetComponent<Enemy>();
+        navMeshAgent = animator.gameObject.GetComponent<NavMeshAgent>();
+        patrolAccess = animator.gameObject.GetComponent<Patrol>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        lastSeenPosition = player.position;
 
+        FollowPlayer();
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
@@ -35,4 +47,12 @@ public class Follow : StateMachineBehaviour
     //{
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
+
+    public void FollowPlayer()
+    {
+        //patrolAccess.TogglePatrol(false);//detiene la patrulla
+        navMeshAgent.SetDestination(lastSeenPosition);
+        isChasingPlayer = true;
+        //StopAllCoroutines();
+    }
 }
