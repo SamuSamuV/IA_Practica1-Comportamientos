@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] public GameManager gM;
 
     private Patrol patrolAccess; //referencia al script Patrullar
+    public bool playerHeared = false;
 
     void Start()
     {
@@ -68,7 +69,7 @@ public class Enemy : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(player.position, directionToEnemy, out hit, raycastDistance, enemyLayer))
         {
-            if (hit.collider.CompareTag("Wall"))
+            if (hit.collider.CompareTag("Wall") && !playerHeared)
             {
                 if (animator.GetBool("Patroll"))
                 {
@@ -94,7 +95,7 @@ public class Enemy : MonoBehaviour
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.red);
             }
 
-            else if (hit.collider.gameObject == this.gameObject)
+            else if (hit.collider.gameObject == this.gameObject && !playerHeared)
             {
                 if (animator.GetBool("Patroll"))
                 {
@@ -129,7 +130,7 @@ public class Enemy : MonoBehaviour
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
             }
 
-            else
+            else if(!playerHeared)
             {
                 if (animator.GetBool("Patroll"))
                 {
@@ -238,7 +239,11 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ColliderSonido"))
         {
+            playerHeared = true;
 
+            animator.SetBool("Search", false);
+            animator.SetBool("Follow", true);
+            animator.SetBool("Patroll", false);
         }
     }
 }

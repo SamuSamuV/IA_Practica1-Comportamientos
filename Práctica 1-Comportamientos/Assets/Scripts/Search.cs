@@ -11,6 +11,7 @@ public class Search : StateMachineBehaviour
     private float destinationOfLastSeenPlayer = 0.5f;
     public Transform player;
     Enemy enemy;
+    Follow follow;
 
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

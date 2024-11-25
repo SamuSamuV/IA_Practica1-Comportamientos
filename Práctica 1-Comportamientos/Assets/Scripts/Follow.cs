@@ -27,7 +27,22 @@ public class Follow : StateMachineBehaviour
     {
         lastSeenPosition = player.position;
 
-        FollowPlayer();
+        if (!enemy.playerHeared)
+        {
+            FollowPlayer();
+        }
+
+        else
+        {
+            Debug.Log("MACACO");
+            navMeshAgent.SetDestination(lastSeenPosition);
+
+            enemy.playerHeared = false;
+
+            animator.SetBool("Patroll", false);
+            animator.SetBool("Search", true);
+            animator.SetBool("Follow", false);
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
