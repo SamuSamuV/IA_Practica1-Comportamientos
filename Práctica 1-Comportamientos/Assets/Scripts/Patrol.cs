@@ -3,133 +3,69 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Patrol : MonoBehaviour
+public class Patrol : StateMachineBehaviour
 {
 
-    private NavMeshAgent enemyAgent; //respete la maya de navegación
-    public Transform[] waypoints;
-    int currentWaypoint = 0;
-    private bool ruteComplete = false;
+   // Componente que maneja el movimiento del enemigo a través de NavMesh.
+    public Transform[] waypoints; // Puntos de patrullaje (waypoints) a seguir por el enemigo.
+    private int currentWaypoint = 0; // Índice del waypoint actual.
+    private bool routeComplete = false; // Indica si la ruta ha sido completada.
     private bool isPatrolling = true;
-
-    //[SerializeField] private float VelocidadMovimiento;
-
-    //[SerializeField] private Transform[] puntosMovimiento;//lugares x donde se mueven los enemigos
-
-    //[SerializeField] private float DistanciaMinima; //q no llegue justo al punto
-
-    //int seleccionPunto; // a q punto se va a mover
-    //private SpriteRenderer spriteRendenderer;// para controlar como se ve el personaje
-
-    //private bool hasRotated = false;
+    private NavMeshAgent navMeshAgent;
+    Enemy enemy;
 
 
-    //public void Start()
-    //{
-    //    seleccionPunto = Random.Range(0,puntosMovimiento.Length);
-    //    spriteRendenderer = GetComponent<SpriteRenderer>();
-
-
-    //    enemyAgent = GetComponent<NavMeshAgent>();
-    //}
-
-    //private void Update()
-    //{
-    //    enemyAgent.destination = Vector3.zero;
-
-
-    //    transform.position = Vector3.MoveTowards(transform.position, puntosMovimiento[seleccionPunto].position, VelocidadMovimiento * Time.deltaTime);
-
-    //    if (Vector3.Distance(transform.position, puntosMovimiento[seleccionPunto].position) < DistanciaMinima)
-
-    //    {
-
-    //        seleccionPunto = Random.Range(0, puntosMovimiento.Length);
-    //        Girar();
-    //    }
-
-
-    //}
-
-
-    //private void Girar()
-    //{
-    //    if (transform.position.x < (puntosMovimiento[seleccionPunto].position.x))
-    //    {
-    //        transform.Rotate(0, 180, 0);
-    //        hasRotated = true;
-    //    }
-    //}
-
-
-
-    public void Start()
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemyAgent = GetComponent<NavMeshAgent>();//la maya que hemos creado
-
+        navMeshAgent= animator.gameObject.GetComponent<NavMeshAgent>(); // Obtener el NavMeshAgent asociado al enemigo.
+        enemy = animator.gameObject.GetComponent<Enemy>();
 
         if (waypoints.Length > 0)
         {
-            enemyAgent.SetDestination(waypoints[currentWaypoint].position);
+           navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el destino inicial en el primer waypoint.
         }
 
+        // Iniciar el patrullaje si no se ha iniciado ya.
+        isPatrolling = true;
     }
 
 
-    private void Update()
+    // OnStateUpdate es llamado cada frame mientras el enemigo esté en el estado de patrullaje.
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
-        if (!enemyAgent.pathPending && enemyAgent.remainingDistance < 0.5f) //si el agente NO está actualmente calculando una nueva ruta o si la distancia de llegada al punto es menor a 0.5 unidades es la distancia mínima considerada como “llegada”.
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f) // Verificar si el enemigo ha llegado al waypoint.
         {
-            
-            if (!ruteComplete)
+            if (!routeComplete)
             {
-                currentWaypoint++;
-                if (currentWaypoint >= waypoints.Length)
+                currentWaypoint++; // Avanzar al siguiente waypoint.
+                if (currentWaypoint >= waypoints.Length) // Si el último waypoint ha sido alcanzado, ir al anterior.
                 {
                     currentWaypoint = waypoints.Length - 1;
-                    ruteComplete = true;
+                    routeComplete = true;
                 }
             }
-
             else
             {
-                currentWaypoint--;
-                if (currentWaypoint < 0)
+                currentWaypoint--; // Retroceder a un waypoint anterior si la ruta ha sido completada.
+                if (currentWaypoint < 0) // Si llegamos al principio de la ruta, iniciar de nuevo.
                 {
                     currentWaypoint = 0;
-                    ruteComplete = false;
+                    routeComplete = false;
                 }
             }
 
-            enemyAgent.SetDestination(waypoints[currentWaypoint].position);
+            navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el siguiente waypoint como destino.
         }
     }
 
-
-    public void TogglePatrol(bool status)
-    {
-        isPatrolling = status;
-
-        // Si se reactiva la patrulla, ir al waypoint más cercano
-        if (status)
-        {
-            GoToClosestWaypoint();
-        }
-        else
-        {
-            enemyAgent.ResetPath(); // Detener el movimiento mientras no esté en modo patrulla
-        }
-    }
-
-    private void GoToClosestWaypoint()
+    private void GoToClosestWaypoint(Animator animator)
     {
         float closestDistance = Mathf.Infinity;
         int closestWaypointIndex = 0;
 
         for (int i = 0; i < waypoints.Length; i++)
         {
-            float distance = Vector3.Distance(transform.position, waypoints[i].position);
+            float distance = Vector3.Distance(animator.transform.position, waypoints[i].position);
             if (distance < closestDistance)
             {
                 closestDistance = distance;
@@ -138,40 +74,99 @@ public class Patrol : MonoBehaviour
         }
 
         currentWaypoint = closestWaypointIndex;
-        enemyAgent.SetDestination(waypoints[currentWaypoint].position);
+        navMeshAgent.SetDestination(waypoints[currentWaypoint].position);
         isPatrolling = true;
     }
 }
 
 
-//Para hacer que el enemigo vuelva automaticamente al 1º punto de patrullaje al completar el recorrido
+    //private NavMeshAgent enemyAgent; //respete la maya de navegación
+    //public Transform[] waypoints;
+    //int currentWaypoint = 0;
+    //private bool ruteComplete = false;
+    //private bool isPatrolling = true;
+    //Search search;
 
-//public Transform[] waypoints; //Array de puntos de patrullaje
-//public float speed = 2f; //Velocidad de movimiento del enemigo
-//private NavMeshAgent enemyAgent;
-//private interface currentWayPoint = 0; //Indice del waypoint actual
 
-//void Start()
-//{
-//    enemyAgent = getComponent<NavMeshAgent>();
 
-//    if(waypoints.Length > 0)
+//    public void Start()
 //    {
-//        enemyAgent.SetDestination(waypoints[currentWaypoint].position); //Establece el primer punto de patrullaje como destino inicial
-//    }
-//}
+//      //  enemyAgent = //GetComponent<NavMeshAgent>();//la maya que hemos creado
 
-//void Update()
-//{
-//    if(!enemyAgent.pathPending && enemyAgent.remainingDistance < 0.5f) //Verificar si el enemigo ha alcanzado el waypoint actual
-//    {
-//        currentWaypoint++; //Incrementar el indice del waypoint actual
 
-//        if(currentWaypoint >= waypoints.Length) //Si ha llegado al ultimo waypoint, volver al primero
+//        if (waypoints.Length > 0)
 //        {
-//            currentWaypoint = 0;
+//            enemyAgent.SetDestination(waypoints[currentWaypoint].position);
 //        }
 
-//        enemyAgent.SetDestination(waypoints[currentWaypoint].position); //Establecer el proximo destino en el nuevo waypoint
+//    }
+
+
+//    private void Update()
+//    {
+
+//        if (!enemyAgent.pathPending && enemyAgent.remainingDistance < 0.5f) //si el agente NO está actualmente calculando una nueva ruta o si la distancia de llegada al punto es menor a 0.5 unidades es la distancia mínima considerada como “llegada”.
+//        {
+
+//            if (!ruteComplete)
+//            {
+//                currentWaypoint++;
+//                if (currentWaypoint >= waypoints.Length)
+//                {
+//                    currentWaypoint = waypoints.Length - 1;
+//                    ruteComplete = true;
+//                }
+//            }
+
+//            else
+//            {
+//                currentWaypoint--;
+//                if (currentWaypoint < 0)
+//                {
+//                    currentWaypoint = 0;
+//                    ruteComplete = false;
+//                }
+//            }
+
+//            enemyAgent.SetDestination(waypoints[currentWaypoint].position);
+//        }
+//    }
+
+
+//    public void TogglePatrol(bool status)
+//    {
+//        isPatrolling = status;
+
+//        // Si se reactiva la patrulla, ir al waypoint más cercano
+//        if (status)
+//        {
+//            GoToClosestWaypoint();
+//        }
+//        else
+//        {
+//            enemyAgent.ResetPath(); // Detener el movimiento mientras no esté en modo patrulla
+//        }
+//    }
+
+//    private void GoToClosestWaypoint()
+//    {
+//       // float closestDistance = Mathf.Infinity;
+//        int closestWaypointIndex = 0;
+
+//        for (int i = 0; i < waypoints.Length; i++)
+//        {
+//            float distance = Vector3.Distance(//transform.position, waypoints[i].position);
+//              if (//distance < closestDistance)
+//            {
+//                closestDistance = distance;
+//                closestWaypointIndex = i;
+//            }
+//        }
+
+//        currentWaypoint = closestWaypointIndex;
+//        enemyAgent.SetDestination(waypoints[currentWaypoint].position);
+//        isPatrolling = true;
 //    }
 //}
+
+

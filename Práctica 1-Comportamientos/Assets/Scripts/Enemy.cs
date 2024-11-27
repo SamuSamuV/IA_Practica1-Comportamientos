@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] public GameManager gM;
 
-    private Patrol patrolAccess; //referencia al script Patrullar
+    
     public bool playerHeared = false;
 
     void Start()
@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
         visionCone = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
-        patrolAccess = GetComponent<Patrol>();
+     
 
         animator.SetBool("Patroll", true);
     }
