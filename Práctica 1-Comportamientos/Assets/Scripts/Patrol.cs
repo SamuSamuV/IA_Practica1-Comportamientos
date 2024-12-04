@@ -17,7 +17,7 @@ public class Patrol : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        navMeshAgent= animator.gameObject.GetComponent<NavMeshAgent>(); // Obtener el NavMeshAgent asociado al enemigo.
+        navMeshAgent = animator.gameObject.GetComponent<NavMeshAgent>(); // Obtener el NavMeshAgent asociado al enemigo.
         enemy = animator.gameObject.GetComponent<Enemy>();
 
         if (waypoints.Length > 0)
@@ -26,7 +26,14 @@ public class Patrol : StateMachineBehaviour
         }
 
         // Iniciar el patrullaje si no se ha iniciado ya.
+       
         isPatrolling = true;
+    }
+
+    //NICO
+    public void StateEnter(List<Transform> transforms)
+    {
+        waypoints = transforms.ToArray();
     }
 
 

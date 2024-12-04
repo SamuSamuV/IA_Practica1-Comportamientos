@@ -8,7 +8,7 @@ public class Follow : StateMachineBehaviour
     [SerializeField] float speed;
     public Transform player;
     Enemy enemy;
-    private Patrol patrolAccess; //referencia al script Patrullar
+    //private Patrol patrolAccess; //referencia al script Patrullar
     private NavMeshAgent navMeshAgent;
     [SerializeField] public Vector3 lastSeenPosition;
     private bool isChasingPlayer = false;
@@ -19,7 +19,7 @@ public class Follow : StateMachineBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         enemy = animator.gameObject.GetComponent<Enemy>();
         navMeshAgent = animator.gameObject.GetComponent<NavMeshAgent>();
-        patrolAccess = animator.gameObject.GetComponent<Patrol>();
+        //patrolAccess = animator.gameObject.GetComponent<Patrol>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

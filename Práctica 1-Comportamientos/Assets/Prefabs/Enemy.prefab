@@ -173,7 +173,6 @@ GameObject:
   - component: {fileID: 6263538830359902691}
   - component: {fileID: 5567017191939656186}
   - component: {fileID: 7128446052938770908}
-  - component: {fileID: 793561911602707409}
   - component: {fileID: 7902689942357998239}
   m_Layer: 0
   m_Name: Enemy
@@ -319,19 +318,8 @@ MonoBehaviour:
   moveSpeed: 1
   lastSeenPosition: {x: 0, y: 0, z: 0}
   gM: {fileID: 0}
---- !u!114 &793561911602707409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4966001005031706919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b15d3fd7e3fe3c439236088275c0c9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints: []
+  Path: []
+  playerHeared: 0
 --- !u!95 &7902689942357998239
 Animator:
   serializedVersion: 5

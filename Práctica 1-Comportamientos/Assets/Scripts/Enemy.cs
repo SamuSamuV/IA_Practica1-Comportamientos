@@ -24,8 +24,8 @@ public class Enemy : MonoBehaviour
     private float destinationOfLastSeenPlayer = 0.5f;
 
     [SerializeField] public GameManager gM;
+    [SerializeField] private List<Transform> Path;
 
-    
     public bool playerHeared = false;
 
     void Start()
@@ -45,7 +45,10 @@ public class Enemy : MonoBehaviour
         visionCone = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
-     
+
+        //NICO
+        var animator_behaviour = animator.GetBehaviour<Patrol>();
+        animator_behaviour.waypoints = Path.ToArray();
 
         animator.SetBool("Patroll", true);
     }
