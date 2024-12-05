@@ -1,10 +1,10 @@
-using System. Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
     public LayerMask enemyLayer;
@@ -15,9 +15,9 @@ public class Enemy : MonoBehaviour
     public GameObject enemy;
     public GameObject visionCone;
 
-   
+    private Animator animator;
     private NavMeshAgent navMeshAgent;
-    private StateMachine _stateMachine;
+    private StateMachine stateMachine;
 
     [SerializeField] float moveSpeed = 5f;
 
@@ -29,19 +29,15 @@ public class Enemy : MonoBehaviour
     [SerializeField] private List<Transform> Path;
 
     public bool playerHeared = false;
-    public NavMeshAgent NavMeshAgent => this.navMeshAgent;
-  
 
     private void Awake()
     {
-       this.navMeshAgent = GetComponent<NavMeshAgent>();
+        stateMachine = new StateMachine();
     }
 
     void Start()
     {
-        //animator = GetComponent<Animator>();
-        this._stateMachine = new StateMachine(new Patrol(this, Path));
-        InvokeRepeating(nameof(UpdateStateMachine), 0.0f, 0.2f);
+        animator = GetComponent<Animator>();
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
@@ -57,22 +53,15 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
 
-        //NICO
-        var animator_behaviour = animator.GetBehaviour<Patrol>();
-        animator_behaviour.waypoints = Path.ToArray();
+        stateMachine.ChangeState(new PatrolState(stateMachine, animator));
 
         animator.SetBool("Patroll", true);
-    }
-
-    private void UpdateStateMachine()
-    {
-        this._stateMachine.UpdateMachine();
     }
 
     void Update()
     {
         RayCastLogic();
-
+        stateMachine.Update();
         //if (isChasingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= destinationOfLastSeenPlayer)
         //{
         //    isChasingPlayer = false;
@@ -149,7 +138,7 @@ public class Enemy : MonoBehaviour
                 Debug.DrawRay(player.position, directionToEnemy * raycastDistance, Color.green);
             }
 
-            else if(!playerHeared)
+            else if (!playerHeared)
             {
                 if (animator.GetBool("Patroll"))
                 {

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class State
+public abstract class StateNico
 {
     protected Enemy _enemy;
     protected List<Transform> _pathPositions;
     protected bool _canSeePlayer;
     protected StateMachine _stateMachine;
 
-    public State(StateMachine stateMachine, Enemy enemy, List<Transform> pathPositions)
+    public StateNico(StateMachine stateMachine, Enemy enemy, List<Transform> pathPositions)
     {
         this._stateMachine = stateMachine;
         this._enemy = enemy;

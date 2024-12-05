@@ -1,97 +1,97 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using UnityEngine.AI;
 
-public class Patrol : State
-{
+//public class Patrol : State
+//{
 
-   // Componente que maneja el movimiento del enemigo a través de NavMesh.
-    public Transform[] waypoints; // Puntos de patrullaje (waypoints) a seguir por el enemigo.
-    private int currentWaypoint = 0; // Índice del waypoint actual.
-    private bool routeComplete = false; // Indica si la ruta ha sido completada.
-    private bool isPatrolling = true;
+//   // Componente que maneja el movimiento del enemigo a través de NavMesh.
+//    public Transform[] waypoints; // Puntos de patrullaje (waypoints) a seguir por el enemigo.
+//    private int currentWaypoint = 0; // Índice del waypoint actual.
+//    private bool routeComplete = false; // Indica si la ruta ha sido completada.
+//    private bool isPatrolling = true;
 
-    public Patrol(Enemy enemy, List<Transform> pathPositions) : base(enemy, pathPositions){}
+//    public Patrol(Enemy enemy, List<Transform> pathPositions) : base(enemy, pathPositions){}
 
-    private NavMeshAgent navMeshAgent => this._enemy.NavMeshAgent;
+//    private NavMeshAgent navMeshAgent => this._enemy.NavMeshAgent;
    
     
 
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
+//    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+//    {
 
 
-        if (waypoints.Length > 0)
-        {
-           navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el destino inicial en el primer waypoint.
-        }
+//        if (waypoints.Length > 0)
+//        {
+//           navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el destino inicial en el primer waypoint.
+//        }
 
-        // Iniciar el patrullaje si no se ha iniciado ya.
+//        // Iniciar el patrullaje si no se ha iniciado ya.
        
-        isPatrolling = true;
-    }
+//        isPatrolling = true;
+//    }
 
 
-    // OnStateUpdate es llamado cada frame mientras el enemigo esté en el estado de patrullaje.
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f) // Verificar si el enemigo ha llegado al waypoint.
-        {
-            if (!routeComplete)
-            {
-                currentWaypoint++; // Avanzar al siguiente waypoint.
-                if (currentWaypoint >= waypoints.Length) // Si el último waypoint ha sido alcanzado, ir al anterior.
-                {
-                    currentWaypoint = waypoints.Length - 1;
-                    routeComplete = true;
-                }
-            }
-            else
-            {
-                currentWaypoint--; // Retroceder a un waypoint anterior si la ruta ha sido completada.
-                if (currentWaypoint < 0) // Si llegamos al principio de la ruta, iniciar de nuevo.
-                {
-                    currentWaypoint = 0;
-                    routeComplete = false;
-                }
-            }
+//    // OnStateUpdate es llamado cada frame mientras el enemigo esté en el estado de patrullaje.
+//    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+//    {
+//        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f) // Verificar si el enemigo ha llegado al waypoint.
+//        {
+//            if (!routeComplete)
+//            {
+//                currentWaypoint++; // Avanzar al siguiente waypoint.
+//                if (currentWaypoint >= waypoints.Length) // Si el último waypoint ha sido alcanzado, ir al anterior.
+//                {
+//                    currentWaypoint = waypoints.Length - 1;
+//                    routeComplete = true;
+//                }
+//            }
+//            else
+//            {
+//                currentWaypoint--; // Retroceder a un waypoint anterior si la ruta ha sido completada.
+//                if (currentWaypoint < 0) // Si llegamos al principio de la ruta, iniciar de nuevo.
+//                {
+//                    currentWaypoint = 0;
+//                    routeComplete = false;
+//                }
+//            }
 
-            navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el siguiente waypoint como destino.
-        }
-    }
+//            navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el siguiente waypoint como destino.
+//        }
+//    }
 
-    private void GoToClosestWaypoint(Animator animator)
-    {
-        float closestDistance = Mathf.Infinity;
-        int closestWaypointIndex = 0;
+//    private void GoToClosestWaypoint(Animator animator)
+//    {
+//        float closestDistance = Mathf.Infinity;
+//        int closestWaypointIndex = 0;
 
-        for (int i = 0; i < waypoints.Length; i++)
-        {
-            float distance = Vector3.Distance(animator.transform.position, waypoints[i].position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestWaypointIndex = i;
-            }
-        }
+//        for (int i = 0; i < waypoints.Length; i++)
+//        {
+//            float distance = Vector3.Distance(animator.transform.position, waypoints[i].position);
+//            if (distance < closestDistance)
+//            {
+//                closestDistance = distance;
+//                closestWaypointIndex = i;
+//            }
+//        }
 
-        currentWaypoint = closestWaypointIndex;
-        navMeshAgent.SetDestination(waypoints[currentWaypoint].position);
-        isPatrolling = true;
-    }
+//        currentWaypoint = closestWaypointIndex;
+//        navMeshAgent.SetDestination(waypoints[currentWaypoint].position);
+//        isPatrolling = true;
+//    }
 
-    public override void Think()
-    {
-        if(this._canSeePlayer)
-            this._stateMachine.UpdateState(new Follow(this._stateMachine, this._enemy, this._pathPositions);
-    }
+//    public override void Think()
+//    {
+//        if(this._canSeePlayer)
+//            this._stateMachine.UpdateState(new Follow(this._stateMachine, this._enemy, this._pathPositions);
+//    }
 
-    public override void Act()
-    {
-        this._enemy.NavMeshAgent.SetDestination(...);
-    }
-}
+//    public override void Act()
+//    {
+//        this._enemy.NavMeshAgent.SetDestination(...);
+//    }
+//}
 
 
     //private NavMeshAgent enemyAgent; //respete la maya de navegación
