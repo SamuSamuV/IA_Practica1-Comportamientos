@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
     public LayerMask enemyLayer;
@@ -14,8 +15,9 @@ public class Enemy : MonoBehaviour
     public GameObject enemy;
     public GameObject visionCone;
 
-    private Animator animator;
+   
     private NavMeshAgent navMeshAgent;
+    private StateMachine _stateMachine;
 
     [SerializeField] float moveSpeed = 5f;
 
@@ -27,10 +29,19 @@ public class Enemy : MonoBehaviour
     [SerializeField] private List<Transform> Path;
 
     public bool playerHeared = false;
+    public NavMeshAgent NavMeshAgent => this.navMeshAgent;
+  
+
+    private void Awake()
+    {
+       this.navMeshAgent = GetComponent<NavMeshAgent>();
+    }
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
+        this._stateMachine = new StateMachine(new Patrol(this, Path));
+        InvokeRepeating(nameof(UpdateStateMachine), 0.0f, 0.2f);
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
@@ -51,6 +62,11 @@ public class Enemy : MonoBehaviour
         animator_behaviour.waypoints = Path.ToArray();
 
         animator.SetBool("Patroll", true);
+    }
+
+    private void UpdateStateMachine()
+    {
+        this._stateMachine.UpdateMachine();
     }
 
     void Update()

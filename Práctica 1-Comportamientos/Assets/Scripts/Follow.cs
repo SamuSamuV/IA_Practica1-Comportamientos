@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Follow : StateMachineBehaviour
+public class Follow : State
 {
     [SerializeField] float speed;
     public Transform player;
@@ -12,6 +12,10 @@ public class Follow : StateMachineBehaviour
     private NavMeshAgent navMeshAgent;
     [SerializeField] public Vector3 lastSeenPosition;
     private bool isChasingPlayer = false;
+
+    public Follow(StateMachine stateMachine, Enemy enemy, List<Transform> pathPositions) : base(stateMachine, enemy, pathPositions)
+    {
+    }
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -69,5 +73,15 @@ public class Follow : StateMachineBehaviour
         navMeshAgent.SetDestination(lastSeenPosition);
         isChasingPlayer = true;
         //StopAllCoroutines();
+    }
+
+    public override void Think()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Act()
+    {
+        throw new System.NotImplementedException();
     }
 }

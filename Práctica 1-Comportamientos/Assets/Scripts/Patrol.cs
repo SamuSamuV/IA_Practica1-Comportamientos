@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Patrol : StateMachineBehaviour
+public class Patrol : State
 {
 
    // Componente que maneja el movimiento del enemigo a través de NavMesh.
@@ -11,14 +11,16 @@ public class Patrol : StateMachineBehaviour
     private int currentWaypoint = 0; // Índice del waypoint actual.
     private bool routeComplete = false; // Indica si la ruta ha sido completada.
     private bool isPatrolling = true;
-    private NavMeshAgent navMeshAgent;
-    Enemy enemy;
 
+    public Patrol(Enemy enemy, List<Transform> pathPositions) : base(enemy, pathPositions){}
+
+    private NavMeshAgent navMeshAgent => this._enemy.NavMeshAgent;
+   
+    
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        navMeshAgent = animator.gameObject.GetComponent<NavMeshAgent>(); // Obtener el NavMeshAgent asociado al enemigo.
-        enemy = animator.gameObject.GetComponent<Enemy>();
+
 
         if (waypoints.Length > 0)
         {
@@ -28,12 +30,6 @@ public class Patrol : StateMachineBehaviour
         // Iniciar el patrullaje si no se ha iniciado ya.
        
         isPatrolling = true;
-    }
-
-    //NICO
-    public void StateEnter(List<Transform> transforms)
-    {
-        waypoints = transforms.ToArray();
     }
 
 
@@ -83,6 +79,17 @@ public class Patrol : StateMachineBehaviour
         currentWaypoint = closestWaypointIndex;
         navMeshAgent.SetDestination(waypoints[currentWaypoint].position);
         isPatrolling = true;
+    }
+
+    public override void Think()
+    {
+        if(this._canSeePlayer)
+            this._stateMachine.UpdateState(new Follow(this._stateMachine, this._enemy, this._pathPositions);
+    }
+
+    public override void Act()
+    {
+        this._enemy.NavMeshAgent.SetDestination(...);
     }
 }
 
