@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
 
-        stateMachine.ChangeState(new PatrolState(stateMachine, animator));
+        stateMachine.ChangeState(new PatrolState(stateMachine, animator, this, navMeshAgent));
 
         animator.SetBool("Patroll", true);
     }
