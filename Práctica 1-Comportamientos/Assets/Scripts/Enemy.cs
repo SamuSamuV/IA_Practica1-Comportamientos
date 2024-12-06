@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     private Animator animator;
     private NavMeshAgent navMeshAgent;
-    private StateMachine stateMachine;
+    private StateMachine stateMachine; //maquina de estados
 
     [SerializeField] float moveSpeed = 5f;
 
@@ -25,21 +25,22 @@ public class Enemy : MonoBehaviour
     public bool isChasingPlayer = false;
     public float destinationOfLastSeenPlayer = 0.5f;
 
-    [SerializeField] public GameManager gM;
-    [SerializeField] private List<Transform> Path;
+    [SerializeField] public GameManager gM; //referencia GameManager
+     //[SerializeField] private List<Transform> Path;
+    [SerializeField] public Transform[] Path;
 
     public bool playerHeared = false;
 
     private void Awake()
     {
-        stateMachine = new StateMachine();
+        stateMachine = new StateMachine();//se crea una instancia de la máquina de estados.
     }
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>(); //Obtiene referencias al Animator, 
 
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform; //Obtiene referencias al , player
 
         GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
         enemies = new Transform[enemyObjects.Length];
@@ -53,7 +54,7 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
 
-        stateMachine.ChangeState(new PatrolState(stateMachine, animator, this, navMeshAgent));
+        stateMachine.ChangeState(new PatrolState(stateMachine, animator, this, navMeshAgent)); //empieza patrullando
 
         animator.SetBool("Patroll", true);
     }

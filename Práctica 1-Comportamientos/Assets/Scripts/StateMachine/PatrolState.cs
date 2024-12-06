@@ -10,12 +10,23 @@ public class PatrolState : State
     private Vector3 lastSeenPosition;
     private bool isChasingPlayer = false;
 
+
+
+    public Transform[] waypoints;
+    // Puntos de patrullaje (waypoints) a seguir por el enemigo.
+    private int currentWaypoint = 0; // Índice del waypoint actual.
+    private bool routeComplete = false; // Indica si la ruta ha sido completada.
+
     public PatrolState(StateMachine stateMachine, Animator animator, Enemy enemy, NavMeshAgent navMeshAgent) : base(stateMachine)
     {
         this.animator = animator;
         this.enemy = enemy;
         this.navMeshAgent = navMeshAgent;
         this.player = GameObject.FindGameObjectWithTag("Player").transform; // Encuentra al jugador al inicializar el estado.
+        for(int i = 0; i < enemy.Path.Length; i++)
+        {
+            waypoints[i] = enemy.Path[i];
+        }
     }
 
     public override void Enter()
@@ -25,6 +36,12 @@ public class PatrolState : State
 
     public override void Execute()
     {
+        if(!isChasingPlayer && !enemy.playerHeared) 
+        {
+            Patrol();
+        
+        }
+        //transicion a otros estados 
         if (animator.GetBool("Follow"))
         {
             stateMachine.ChangeState(new FollowState(stateMachine, animator, enemy, navMeshAgent));
@@ -38,5 +55,12 @@ public class PatrolState : State
     public override void Exit()
     {
         Debug.Log("Exiting Patrol State");
+    }
+
+
+
+    private void Patrol()
+    {
+
     }
 }
