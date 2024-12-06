@@ -22,8 +22,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] float moveSpeed = 5f;
 
     [SerializeField] public Vector3 lastSeenPosition;
-    private bool isChasingPlayer = false;
-    private float destinationOfLastSeenPlayer = 0.5f;
+    public bool isChasingPlayer = false;
+    public float destinationOfLastSeenPlayer = 0.5f;
 
     [SerializeField] public GameManager gM;
     [SerializeField] private List<Transform> Path;
