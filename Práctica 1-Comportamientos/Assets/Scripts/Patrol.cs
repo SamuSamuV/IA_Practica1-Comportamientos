@@ -6,17 +6,17 @@
 //public class Patrol : State
 //{
 
-//   // Componente que maneja el movimiento del enemigo a través de NavMesh.
+//    // Componente que maneja el movimiento del enemigo a través de NavMesh.
 //    public Transform[] waypoints; // Puntos de patrullaje (waypoints) a seguir por el enemigo.
 //    private int currentWaypoint = 0; // Índice del waypoint actual.
 //    private bool routeComplete = false; // Indica si la ruta ha sido completada.
 //    private bool isPatrolling = true;
 
-//    public Patrol(Enemy enemy, List<Transform> pathPositions) : base(enemy, pathPositions){}
+//    public Patrol(Enemy enemy, List<Transform> pathPositions) : base(enemy, pathPositions) { }
 
 //    private NavMeshAgent navMeshAgent => this._enemy.NavMeshAgent;
-   
-    
+
+
 
 //    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 //    {
@@ -24,11 +24,11 @@
 
 //        if (waypoints.Length > 0)
 //        {
-//           navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el destino inicial en el primer waypoint.
+//            navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el destino inicial en el primer waypoint.
 //        }
 
 //        // Iniciar el patrullaje si no se ha iniciado ya.
-       
+
 //        isPatrolling = true;
 //    }
 
@@ -83,7 +83,7 @@
 
 //    public override void Think()
 //    {
-//        if(this._canSeePlayer)
+//        if (this._canSeePlayer)
 //            this._stateMachine.UpdateState(new Follow(this._stateMachine, this._enemy, this._pathPositions);
 //    }
 
@@ -94,12 +94,12 @@
 //}
 
 
-    //private NavMeshAgent enemyAgent; //respete la maya de navegación
-    //public Transform[] waypoints;
-    //int currentWaypoint = 0;
-    //private bool ruteComplete = false;
-    //private bool isPatrolling = true;
-    //Search search;
+//private NavMeshAgent enemyAgent; //respete la maya de navegación
+//public Transform[] waypoints;
+//int currentWaypoint = 0;
+//private bool ruteComplete = false;
+//private bool isPatrolling = true;
+//Search search;
 
 
 
