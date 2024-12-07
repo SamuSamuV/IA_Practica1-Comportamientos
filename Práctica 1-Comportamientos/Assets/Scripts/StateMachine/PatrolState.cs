@@ -24,24 +24,35 @@ public class PatrolState : State
         this.enemy = enemy;
         this.navMeshAgent = navMeshAgent;
         this.player = GameObject.FindGameObjectWithTag("Player").transform; // Encuentra al jugador al inicializar el estado.
-        for(int i = 0; i < enemy.Path.Length; i++)
+         currentWaypoint = 0; //cada vez q se crea el estado establecemos el punto de inicio a 0
+        
+        this.enemy.Ruta = enemy.Ruta;
+       
+        for (int i = 0; i < enemy.Ruta.Length; i++)
         {
-            waypoints[i] = enemy.Path[i];
+            
+            this.enemy.Ruta[i].position = enemy.Ruta[i].position;
         }
     }
 
     public override void Enter()
     {
+        //Debug.Log("Entering Patrol State");
         Debug.Log("Entering Patrol State");
+        isPatrolling = false; // Inicia la patrulla desde el primer waypoint.
+        currentWaypoint = 0;
+        routeComplete = false;
+
     }
 
     public override void Execute()
     {
-        if(!isChasingPlayer && !this.enemy.playerHeared) 
+
+        if (!enemy.isChasingPlayer && !enemy.playerHeared)
         {
-            Patrol();
-        
+            Patrol();   
         }
+        
         //transicion a otros estados 
         if (animator.GetBool("Follow"))
         {
@@ -57,17 +68,18 @@ public class PatrolState : State
     {
         isPatrolling = false;
         Debug.Log("Exiting Patrol State");
+        
     }
 
-
+    
 
     private void Patrol()
     {
-       isChasingPlayer = false; //NS COMO FUNCIONA
+        Debug.Log("entering Patrol Patrol for the love of god");
         if (!isPatrolling)
         {
             currentWaypoint = 0;
-            navMeshAgent.SetDestination(waypoints[currentWaypoint].position);
+            navMeshAgent.SetDestination(enemy.Ruta[currentWaypoint].position);
             isPatrolling = true;
         }
         else
@@ -77,9 +89,9 @@ public class PatrolState : State
                 if (!routeComplete)
                 {
                     currentWaypoint++; // Avanzar al siguiente waypoint.
-                    if (currentWaypoint >= waypoints.Length) // Si el último waypoint ha sido alcanzado, ir al anterior.
+                    if (currentWaypoint >= this.enemy.Ruta.Length) // Si el último waypoint ha sido alcanzado, ir al anterior.
                     {
-                        currentWaypoint = waypoints.Length - 1;
+                        currentWaypoint = this.enemy.Ruta.Length - 1;
                         routeComplete = true;
                     }
                 }
@@ -93,7 +105,7 @@ public class PatrolState : State
                     }
                 }
 
-                navMeshAgent.SetDestination(waypoints[currentWaypoint].position); // Establecer el siguiente waypoint como destino.
+              navMeshAgent.SetDestination(enemy.Ruta[currentWaypoint].position);// Establecer el siguiente waypoint como destino.
             }
 
 

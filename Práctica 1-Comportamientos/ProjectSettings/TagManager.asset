@@ -9,6 +9,7 @@ TagManager:
   - ConoVision
   - GM
   - ColliderSonido
+  - WP
   layers:
   - Default
   - TransparentFX

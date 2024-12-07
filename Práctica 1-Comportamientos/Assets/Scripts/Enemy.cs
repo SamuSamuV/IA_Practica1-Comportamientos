@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] public GameManager gM; //referencia GameManager
      //[SerializeField] private List<Transform> Path;
-    [SerializeField] public Transform[] Path;
+    [SerializeField] public Transform[] Ruta;
 
     public bool playerHeared = false;
 
