@@ -8,7 +8,7 @@ public class PatrolState : State
     private NavMeshAgent navMeshAgent;
     private Transform player;
     private Vector3 lastSeenPosition;
-    private bool isChasingPlayer = false;
+    
 
 
 
