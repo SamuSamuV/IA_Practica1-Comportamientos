@@ -72,7 +72,6 @@ public class PatrolState : State
 
     private void Patrol()
     {
-        Debug.Log("entering Patrol Patrol for the love of god");
         if (!isPatrolling)
         {
             currentWaypoint = 0;
