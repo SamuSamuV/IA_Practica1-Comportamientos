@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,7 +16,7 @@ public class Enemy : MonoBehaviour
 
     private Animator animator;
     private NavMeshAgent navMeshAgent;
-    private StateMachine stateMachine; //maquina de estados
+    private StateMachine stateMachine;
 
     [SerializeField] float moveSpeed = 5f;
 
@@ -25,22 +24,21 @@ public class Enemy : MonoBehaviour
     public bool isChasingPlayer = false;
     public float destinationOfLastSeenPlayer = 0.5f;
 
-    [SerializeField] public GameManager gM; //referencia GameManager
-     //[SerializeField] private List<Transform> Path;
+    [SerializeField] public GameManager gM;
     [SerializeField] public Transform[] Ruta;
 
     public bool playerHeared = false;
 
     private void Awake()
     {
-        stateMachine = new StateMachine();//se crea una instancia de la máquina de estados.
+        stateMachine = new StateMachine();
     }
 
     void Start()
     {
-        animator = GetComponent<Animator>(); //Obtiene referencias al Animator, 
+        animator = GetComponent<Animator>();
 
-        player = GameObject.FindGameObjectWithTag("Player").transform; //Obtiene referencias al , player
+        player = GameObject.FindGameObjectWithTag("Player").transform;
 
         GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
         enemies = new Transform[enemyObjects.Length];
@@ -54,7 +52,7 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         gM = GameObject.FindGameObjectWithTag("GM").GetComponent<GameManager>();
 
-        stateMachine.ChangeState(new PatrolState(stateMachine, animator, this, navMeshAgent)); //empieza patrullando
+        stateMachine.ChangeState(new PatrolState(stateMachine, animator, this, navMeshAgent));
 
         animator.SetBool("Patroll", true);
     }
@@ -63,11 +61,6 @@ public class Enemy : MonoBehaviour
     {
         RayCastLogic();
         stateMachine.Update();
-        //if (isChasingPlayer && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= destinationOfLastSeenPlayer)
-        //{
-        //    isChasingPlayer = false;
-        //    StartCoroutine(SearchPlayerRoutine());
-        //}
     }
 
     public void RayCastLogic()
@@ -166,75 +159,6 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
-    //public void FollowPlayer()
-    //{
-    //    patrolAccess.TogglePatrol(false);//detiene la patrulla
-    //    navMeshAgent.SetDestination(lastSeenPosition);
-    //    isChasingPlayer = true;
-    //    StopAllCoroutines();
-    //}
-
-    //IEnumerator SearchPlayerRoutine()
-    //{
-    //    yield return RotateRight();
-    //    yield return new WaitForSeconds(1f);
-    //    yield return RotateLeft();
-    //    yield return new WaitForSeconds(1f);
-    //    yield return RotateGoBack();
-
-
-    //    // Después de buscar, llama al método reactivar la patrulla de patrullar
-    //    patrolAccess.TogglePatrol(true);
-    //}
-
-    //IEnumerator RotateRight()
-    //{
-    //    float totalRotation = 0f;
-    //    float rotationSpeed = 150f;
-
-    //    while (totalRotation < 160f)
-    //    {
-    //        float rotationStep = rotationSpeed * Time.deltaTime;
-    //        transform.Rotate(0f, rotationStep, 0f);
-
-    //        totalRotation += rotationStep;
-
-    //        yield return null;
-    //    }
-    //}
-
-    //IEnumerator RotateLeft()
-    //{
-    //    float totalRotation = 0f;
-    //    float rotationSpeed = 150f;
-
-    //    while (totalRotation > -320f)
-    //    {
-    //        float rotationStep = -rotationSpeed * Time.deltaTime;
-    //        transform.Rotate(0f, rotationStep, 0f);
-
-    //        totalRotation += rotationStep;
-
-    //        yield return null;
-    //    }
-    //}
-
-    //IEnumerator RotateGoBack()
-    //{
-    //    float totalRotation = 0f;
-    //    float rotationSpeed = 150f;
-
-    //    while (totalRotation < 160f)
-    //    {
-    //        float rotationStep = rotationSpeed * Time.deltaTime;
-    //        transform.Rotate(0f, rotationStep, 0f);
-
-    //        totalRotation += rotationStep;
-
-    //        yield return null;
-    //    }
-    //}
 
     private void OnCollisionEnter(Collision collision)
     {

@@ -16,7 +16,7 @@ public class FollowState : State
         this.enemy = enemy;
         this.navMeshAgent = navMeshAgent;
         this.lastSeenPosition = Vector3.zero;
-        this.player = GameObject.FindGameObjectWithTag("Player").transform; // Encuentra al jugador al inicializar el estado.
+        this.player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     public override void Enter()
@@ -27,12 +27,11 @@ public class FollowState : State
 
     public override void Execute()
     {
-        // Actualiza la última posición conocida del jugador.
         enemy.lastSeenPosition = player.position;
 
         if (!this.enemy.playerHeared)
         {
-            FollowPlayer(); // Persigue al jugador si está en rango de detección.
+            FollowPlayer();
         }
 
         else
@@ -41,13 +40,11 @@ public class FollowState : State
             navMeshAgent.SetDestination(enemy.lastSeenPosition);
             enemy.playerHeared = false;
 
-            // Cambia a buscar después de llegar a la última posición conocida.
             animator.SetBool("Patroll", false);
             animator.SetBool("Search", true);
             animator.SetBool("Follow", false);
         }
 
-        // Transiciones a otros estados.
         if (animator.GetBool("Patroll"))
         {
             stateMachine.ChangeState(new PatrolState(stateMachine, animator, enemy, navMeshAgent));
